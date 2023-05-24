@@ -1,20 +1,32 @@
 Sub Mark_Fail()
     Dim rng As Range
     Dim cell As Range
-    Dim referenceRowLL As Range
-    Dim referenceRowHL As Range
+    Dim LLRow As Integer
+    Dim ULRow As Integer
     
-    Set rng = ActiveSheet.Range("G19:KS37")
-    Set referenceRowLL = ActiveSheet.Range("G16:KS16")
-    Set referenceRowHL = ActiveSheet.Range("G17:KS17")
+    LLRow = 3
+    ULRow = 4
+    
+    Set rng = ActiveSheet.Range("G6:LA22")
     For Each cell In rng
         If Not IsEmpty(cell.Value) Then
-            If cell.Value < Cells(16, cell.Column).Value Then
-                cell.Font.Color = RGB(255, 0, 0)
-            ElseIf cell.Value > Cells(17, cell.Column).Value Then
-                cell.Font.Color = RGB(255, 0, 0)
-            Else
-                cell.Font.Color = RGB(0, 0, 0)
+            cell.Font.Color = RGB(0, 0, 0)
+            If Not IsEmpty(Cells(LLRow, cell.Column).Value) And IsEmpty(Cells(ULRow, cell.Column).Value) Then
+                If cell.Value < Cells(LLRow, cell.Column).Value Then
+                    cell.Font.Color = RGB(255, 0, 0)
+                End If
+            ElseIf IsEmpty(Cells(LLRow, cell.Column).Value) And Not IsEmpty(Cells(ULRow, cell.Column).Value) Then
+                If cell.Value > Cells(ULRow, cell.Column).Value Then
+                    cell.Font.Color = RGB(255, 0, 0)
+                End If
+            ElseIf Not IsEmpty(Cells(LLRow, cell.Column).Value) And Not IsEmpty(Cells(ULRow, cell.Column).Value) Then
+                If cell.Value < Cells(LLRow, cell.Column).Value Then
+                    cell.Font.Color = RGB(255, 0, 0)
+                ElseIf cell.Value > Cells(ULRow, cell.Column).Value Then
+                    cell.Font.Color = RGB(255, 0, 0)
+                Else
+                    cell.Font.Color = RGB(0, 0, 0)
+                End If
             End If
         End If
     Next cell
